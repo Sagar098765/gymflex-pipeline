@@ -1,70 +1,59 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <!-- Maven project model version -->
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Project identification -->
     <groupId>com.gymflex</groupId>
     <artifactId>gymflex</artifactId>
     <version>1.0.0</version>
-
-    <!-- Create a WAR file instead of a JAR -->
     <packaging>war</packaging>
-
     <name>GymFlex Website</name>
 
     <properties>
-        <!-- Use UTF-8 encoding -->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- This module packages the static website, not the unfinished Java backend. -->
+        <!-- Keep the existing Java files in src/main/java, but do not compile them here. -->
+        <maven.main.skip>true</maven.main.skip>
+
+        <!-- Do not compile or execute the existing Java tests in this static-site build. -->
+        <!-- Jenkins performs a separate validation of the generated WAR contents. -->
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 
     <build>
-
-        <!-- Final output will be gymflex.war -->
         <finalName>gymflex</finalName>
 
         <plugins>
-
-            <!-- Maven plugin responsible for building WAR files -->
+            <!-- Build the static HTML/CSS/JS website as a WAR file. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
-
                 <configuration>
-
-                    <!-- Take HTML, CSS and JS files from Frontend -->
-                    <warSourceDirectory>
-                        ${project.basedir}/Frontend
-                    </warSourceDirectory>
-
-                    <!-- No web.xml required for this static website -->
+                    <!-- Frontend is a sibling of gymflexapp, one level above this POM. -->
+                    <warSourceDirectory>${project.basedir}/../Gymflex website/Frontend</warSourceDirectory>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
 
-                    <!-- Add images to the WAR file -->
+                    <!-- Copy the sibling Images folder into the WAR as Images/. -->
                     <webResources>
                         <resource>
-                            <directory>
-                                ${project.basedir}/Images
-                            </directory>
-
-                            <!-- Keep the Images folder inside the WAR -->
+                            <directory>${project.basedir}/../Gymflex website/Images</directory>
                             <targetPath>Images</targetPath>
-
-                            <!-- Copy files without changing their contents -->
                             <filtering>false</filtering>
                         </resource>
                     </webResources>
-
                 </configuration>
             </plugin>
 
+            <!-- Explicitly skip Java compilation for this static website module. -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.16.0</version>
+            </plugin>
         </plugins>
     </build>
 
