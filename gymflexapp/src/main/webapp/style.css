@@ -117,24 +117,20 @@ header.scrolled {
 
 .hero {
     min-height: 680px;
-
     position: relative;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     text-align: center;
-
-    background-image: url("../images/landingphoto.jpg");
+    
+    /* Use root-absolute path */
+    background-image: url("Images/landingphoto.jpg");
+    
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
     color: white;
-
 }
-
 .hero-overlay {
     position: absolute;
     inset: 0;

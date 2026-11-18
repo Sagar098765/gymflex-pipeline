@@ -9,7 +9,7 @@ RUN rm -rf /usr/local/tomcat/webapps/*
 COPY gymflexapp/target/gymflex.war /usr/local/tomcat/webapps/ROOT.war
 
 # Tomcat's default HTTP connector listens on container port 8080.
-EXPOSE 8080
+EXPOSE 8081
 
 # Run Tomcat in the foreground so Docker can track the container process.
 CMD ["catalina.sh", "run"]
