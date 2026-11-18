@@ -13,13 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <!-- This module packages the static website, not the unfinished Java backend. -->
-        <!-- Keep the existing Java files in src/main/java, but do not compile them here. -->
         <maven.main.skip>true</maven.main.skip>
-
-        <!-- Do not compile or execute the existing Java tests in this static-site build. -->
-        <!-- Jenkins performs a separate validation of the generated WAR contents. -->
         <maven.test.skip>true</maven.test.skip>
     </properties>
 
@@ -27,28 +21,16 @@
         <finalName>gymflex</finalName>
 
         <plugins>
-            <!-- Build the static HTML/CSS/JS website as a WAR file. -->
+            <!-- Maven automatically bundles everything in src/main/webapp into the WAR file -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.4.0</version>
                 <configuration>
-                    <!-- Frontend is a sibling of gymflexapp, one level above this POM. -->
-                    <warSourceDirectory>${project.basedir}/../Gymflex website/Frontend</warSourceDirectory>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
-
-                    <!-- Copy the sibling Images folder into the WAR as Images/. -->
-                    <webResources>
-                        <resource>
-                            <directory>${project.basedir}/../Gymflex website/Images</directory>
-                            <targetPath>Images</targetPath>
-                            <filtering>false</filtering>
-                        </resource>
-                    </webResources>
                 </configuration>
             </plugin>
 
-            <!-- Explicitly skip Java compilation for this static website module. -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
